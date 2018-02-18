@@ -16,5 +16,12 @@ def home(request):
 def pos(request):
     email = request.POST.get("email")
     passw = request.POST.get("pass")
-    user = auth.sign_in_with_email_and_password(email,passw)
+    try:
+        user = auth.sign_in_with_email_and_password(email,passw)
+    except:
+            message="invalid info"
+            return render(request,'seatbooking/login.html',{"messg":message})
+    print(user['localId'])
+    session_id=user['localId']
+    request.session['uid'] = str(session_id)
     return render(request,'seatbooking/welcome.html',{"e":email})
